@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Testimonials Slider</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #EAF6FF;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .slider {
+      position: relative;
+      width: 80%;
+      max-width: 600px;
+      overflow: hidden;
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      padding: 20px;
+    }
+
+    .testimonial {
+      font-family: Georgia, serif;
+      font-size: 18px;
+      font-weight: bold;
+      text-align: center;
+      opacity: 0;
+      transition: opacity 0.5s ease-in-out;
+    }
+
+    .testimonial.active {
+      opacity: 1;
+    }
+
+    .navigation {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 20px;
+    }
+
+    .arrow {
+      cursor: pointer;
+      font-size: 20px;
+      color: #555;
+      user-select: none;
+    }
+
+    .arrow:hover {
+      color: #000;
+    }
+
+    .pagination {
+      display: flex;
+      justify-content: center;
+      margin-top: 10px;
+      gap: 5px;
+    }
+
+    .dot {
+      width: 10px;
+      height: 10px;
+      background-color: #ccc;
+      border-radius: 50%;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .dot.active {
+      background-color: #555;
+    }
+  </style>
+</head>
+<body>
+  <div class="slider" id="testimonialSlider">
+    <div class="testimonial active">"ClientJoy is fantastic! It has streamlined our workflow." - John Doe</div>
+    <div class="testimonial">"I love using ClientJoy! It’s simple and effective." - Jane Smith</div>
+    <div class="testimonial">"The best review service out there. Highly recommended!" - Emily Davis</div>
+
+    <div class="navigation">
+      <span class="arrow" id="prev">&#9664;</span>
+      <span class="arrow" id="next">&#9654;</span>
+    </div>
+
+    <div class="pagination" id="paginationDots">
+      <span class="dot active"></span>
+      <span class="dot"></span>
+      <span class="dot"></span>
+    </div>
+  </div>
+
+  <script>
+    const testimonials = document.querySelectorAll('.testimonial');
+    const dots = document.querySelectorAll('.dot');
+    const prev = document.getElementById('prev');
+    const next = document.getElementById('next');
+    let currentIndex = 0;
+    let interval;
+
+    const showTestimonial = (index) => {
+      testimonials.forEach((testimonial, i) => {
+        testimonial.classList.toggle('active', i === index);
+        dots[i].classList.toggle('active', i === index);
+      });
+    };
+
+    const nextTestimonial = () => {
+      currentIndex = (currentIndex + 1) % testimonials.length;
+      showTestimonial(currentIndex);
+    };
+
+    const prevTestimonial = () => {
+      currentIndex = (currentIndex - 1 + testimonials.length) % testimonials.length;
+      showTestimonial(currentIndex);
+    };
+
+    const startAutoSlide = () => {
+      interval = setInterval(nextTestimonial, 3000);
+    };
+
+    const stopAutoSlide = () => {
+      clearInterval(interval);
+    };
+
+    next.addEventListener('click', () => {
+      stopAutoSlide();
+      nextTestimonial();
+      startAutoSlide();
+    });
+
+    prev.addEventListener('click', () => {
+      stopAutoSlide();
+      prevTestimonial();
+      startAutoSlide();
+    });
+
+    dots.forEach((dot, index) => {
+      dot.addEventListener('click', () => {
+        stopAutoSlide();
+        currentIndex = index;
+        showTestimonial(currentIndex);
+        startAutoSlide();
+      });
+    });
+
+    startAutoSlide();
+  </script>
+</body>
+</html>
